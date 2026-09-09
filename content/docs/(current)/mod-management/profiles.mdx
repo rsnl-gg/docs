@@ -1,0 +1,95 @@
+---
+title: Profiles
+description: Create, switch, duplicate, and manage named mod configurations.
+icon: Users
+---
+
+A **profile** is a named setup: which library mods are included, whether each one is enabled, which options are selected, and in what order they deploy. The Library itself is shared. Deleting a profile does not delete the mods.
+
+The **Default** profile is created automatically. It cannot be renamed or deleted.
+
+## Switching profiles
+
+Profile icons live in the **sidebar**, under Library.
+
+1. Click a profile icon to open that profile's mod list
+2. Drag icons in the sidebar to change their display order
+3. Hover an icon to see the profile name
+
+The table header badge always shows the profile you are currently editing.
+
+## Creating a profile
+
+1. Click the **+** button at the bottom of the sidebar profile list
+2. Enter a name (maximum 20 characters)
+3. Optionally click **Choose Image** to pick a thumbnail
+4. Confirm
+
+The new profile starts empty. Add mods from the Library, import files into this profile, or copy mods from another profile.
+
+## Managing a profile
+
+You can manage a profile from either:
+
+- **Right-click** its sidebar icon
+- Click the **badge** or **gear** in the table header
+
+| Action | Notes |
+|--------|-------|
+| Duplicate | Copies mods, separators, enable state, and load order into a new profile. You can set a name and optional image. |
+| Change Image | Replace the sidebar / badge thumbnail. |
+| Remove Image | Restores the letter placeholder. Only shown when an image is set. |
+| Rename | Available on every profile except Default. |
+| Delete | Available on every profile except Default. Mods stay in the Library. |
+
+If you delete the profile you are currently viewing, Arsenal switches back to Default.
+
+## Adding mods to a profile
+
+From a profile, click **Add Mod** and use **Or select existing mods from your library**.
+
+The picker lists every library mod:
+
+| Detail | Behavior |
+|--------|----------|
+| Already in this profile | Green checkmark. Unchecking **removes** the mod from the profile without deleting Library files. |
+| Search / select all | Apply to the visible list. |
+| Confirm | Adds newly checked mods and removes newly unchecked ones. |
+
+From the Library you can also add one mod or a multi-selection to any number of profiles at once. See [Adding Mods](/mod-management/adding-mods) and [Actions](/mod-management/actions).
+
+## Copying mods between profiles
+
+Copying does not remove the mod from the source profile.
+
+<Tabs items={["Single mod", "Multiple mods"]}>
+  <Tab value="Single mod">
+    1. In a profile, open the **three-dot** menu on a row (or right-click the row)
+    2. Choose **Copy to Profiles**
+    3. Check destination profiles and confirm
+
+    Profiles that already contain the mod are shown as already added and cannot be selected again.
+  </Tab>
+  <Tab value="Multiple mods">
+    1. Select several mods with the circle checkboxes
+    2. Click **Copy to Profiles** on the multi-selection bar
+    3. Check destination profiles and confirm
+
+    Separators are skipped. Mods that are already in a destination profile are skipped there.
+  </Tab>
+</Tabs>
+
+From the Library the same flow is labeled **Add to Profiles**, and you can target every profile including the current one.
+
+## What is stored per profile
+
+| Scope | Data |
+|-------|------|
+| This profile | Membership, enable / disable state, load order, option selections, separator labels and colors |
+| Library (shared) | Mod files on disk, label, description, icon, tags, Nexus Mods identity |
+
+Renaming a mod from any view updates the Library name everywhere.
+
+## Nexus Mods collections
+
+Collection import is limited to **Nexus Mods Premium** accounts. When you import a collection, Arsenal asks whether to **create a new profile** (named after the collection by default) or **add the mods to an existing profile**. Required and optional collection mods can be selected independently, and version conflicts can keep your local file or take the collection version. See [Adding Mods](/mod-management/adding-mods).

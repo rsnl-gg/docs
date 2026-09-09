@@ -1,0 +1,11 @@
+{
+  "title": "Mod Builder",
+  "icon": "Wrench",
+  "pages": [
+    "index",
+    "creating-mods",
+    "options",
+    "projects",
+    "manifest"
+  ]
+}

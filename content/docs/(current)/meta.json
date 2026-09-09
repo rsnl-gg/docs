@@ -1,0 +1,14 @@
+{
+  "title": "Current",
+  "description": "Arsenal 0.36 and later",
+  "root": "version",
+  "pages": [
+    "quick-start",
+    "---",
+    "index",
+    "mod-management",
+    "lobby",
+    "mod-builder",
+    "localization"
+  ]
+}

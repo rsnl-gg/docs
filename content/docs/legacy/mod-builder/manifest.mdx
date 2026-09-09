@@ -1,0 +1,354 @@
+---
+title: Manifest Reference
+description: Complete schema and validation rules for Arsenal manifest.json files.
+icon: FileBraces
+---
+
+The `manifest.json` file is the configuration document that defines your mod's structure, options, and metadata. Version 1 of this schema is still what Arsenal 0.36 and later writes. For the current editor UI, see [Manifest](/mod-builder/manifest). This page remains the full field reference used by the **legacy** builder.
+
+## Complete Schema
+
+```json
+{
+  "Version": 1,
+  "Guid": "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",
+  "Name": "string",
+  "Description": "string",
+  "IconPath": "string",
+  "Options": [
+    {
+      "Name": "string",
+      "Description": "string",
+      "Include": ["string"],
+      "Image": "string",
+      "SubOptions": [
+        {
+          "Name": "string",
+          "Description": "string",
+          "Include": ["string"],
+          "Image": "string"
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Root Fields
+
+### Version
+
+```json
+"Version": 1
+```
+
+| Property | Value |
+|----------|-------|
+| Type | `number` |
+| Required | Yes |
+| Value | Always `1` |
+
+The manifest format version. Currently only version 1 is supported.
+
+### Guid
+
+```json
+"Guid": "a1b2c3d4-e5f6-4789-abcd-ef0123456789"
+```
+
+| Property | Value |
+|----------|-------|
+| Type | `string` |
+| Required | Yes |
+| Format | UUID v4 |
+
+A unique identifier for your mod. Auto-generated when creating a new project. **Do not modify** unless you know what you're doing. Changing the GUID creates a "new" mod in users' libraries.
+
+### Name
+
+```json
+"Name": "My Awesome Mod"
+```
+
+| Property | Value |
+|----------|-------|
+| Type | `string` |
+| Required | Yes |
+| Max Length | Recommended < 50 characters |
+
+The display name shown in mod managers and listings.
+
+### Description
+
+```json
+"Description": "A brief explanation of what this mod does"
+```
+
+| Property | Value |
+|----------|-------|
+| Type | `string` |
+| Required | Yes |
+| Note | Can be empty string `""` |
+
+A short description of the mod's purpose and features.
+
+### IconPath
+
+```json
+"IconPath": "icon.png"
+```
+
+| Property | Value |
+|----------|-------|
+| Type | `string` |
+| Required | No |
+| Format | Relative file path |
+
+Path to the mod's thumbnail image, relative to the mod root folder.
+
+**Supported formats**: PNG, JPEG, WebP
+
+**Recommended size**: 256x256 or 512x512 pixels
+
+### Options
+
+```json
+"Options": [...]
+```
+
+| Property | Value |
+|----------|-------|
+| Type | `array` |
+| Required | No |
+| Items | Option objects |
+
+An array of configurable options for the mod. Omit entirely for simple mods without options.
+
+## Option Object
+
+```json
+{
+  "Name": "High Quality Textures",
+  "Description": "4K resolution texture pack",
+  "Include": ["High Quality Textures"],
+  "Image": "High Quality Textures/preview.png",
+  "SubOptions": [...]
+}
+```
+
+### Name
+
+| Property | Value |
+|----------|-------|
+| Type | `string` |
+| Required | Yes |
+
+The display name for this option.
+
+### Description
+
+| Property | Value |
+|----------|-------|
+| Type | `string` |
+| Required | Yes |
+| Note | Can be empty string |
+
+Explanation of what enabling this option does.
+
+### Include
+
+```json
+"Include": ["FolderName"]
+```
+
+| Property | Value |
+|----------|-------|
+| Type | `string[]` |
+| Required | Conditional |
+| Condition | Required if no `SubOptions` |
+
+Array of folder paths to include when this option is enabled. Paths are relative to the mod root.
+
+### Image
+
+| Property | Value |
+|----------|-------|
+| Type | `string` |
+| Required | No |
+
+Relative path to a preview image for this option.
+
+### SubOptions
+
+| Property | Value |
+|----------|-------|
+| Type | `array` |
+| Required | Conditional |
+| Condition | Required if no `Include` |
+| Items | SubOption objects |
+
+Array of sub-options for nested choices within this option.
+
+<Callout title="Rule">
+  An option must have either `Include` OR `SubOptions`, not both empty.
+</Callout>
+
+## SubOption Object
+
+```json
+{
+  "Name": "Gold Variant",
+  "Description": "Luxurious gold finish",
+  "Include": ["Weapon Skins/Gold Variant"],
+  "Image": "Weapon Skins/Gold Variant/preview.png"
+}
+```
+
+SubOptions have the same fields as Options except they cannot contain nested SubOptions.
+
+### Name
+
+| Property | Value |
+|----------|-------|
+| Type | `string` |
+| Required | Yes |
+
+### Description
+
+| Property | Value |
+|----------|-------|
+| Type | `string` |
+| Required | Yes |
+| Note | Can be empty string |
+
+### Include
+
+| Property | Value |
+|----------|-------|
+| Type | `string[]` |
+| Required | No |
+
+### Image
+
+| Property | Value |
+|----------|-------|
+| Type | `string` |
+| Required | No |
+
+## Examples
+
+### Minimal Mod (No Options)
+
+```json
+{
+  "Version": 1,
+  "Guid": "12345678-1234-4123-8123-123456789abc",
+  "Name": "Simple Texture Mod",
+  "Description": "Replaces default textures"
+}
+```
+
+### Mod with Icon
+
+```json
+{
+  "Version": 1,
+  "Guid": "12345678-1234-4123-8123-123456789abc",
+  "Name": "Enhanced Effects",
+  "Description": "Better particle effects for explosions",
+  "IconPath": "icon.png"
+}
+```
+
+### Mod with Options
+
+```json
+{
+  "Version": 1,
+  "Guid": "12345678-1234-4123-8123-123456789abc",
+  "Name": "Quality Selector",
+  "Description": "Choose your texture quality",
+  "IconPath": "icon.png",
+  "Options": [
+    {
+      "Name": "Ultra Quality",
+      "Description": "4K textures, highest quality",
+      "Include": ["Ultra Quality"],
+      "Image": "Ultra Quality/preview.png"
+    },
+    {
+      "Name": "Performance",
+      "Description": "1K textures, better FPS",
+      "Include": ["Performance"],
+      "Image": "Performance/preview.png"
+    }
+  ]
+}
+```
+
+### Mod with SubOptions
+
+```json
+{
+  "Version": 1,
+  "Guid": "12345678-1234-4123-8123-123456789abc",
+  "Name": "Weapon Customization",
+  "Description": "Multiple weapon skin variants",
+  "IconPath": "icon.png",
+  "Options": [
+    {
+      "Name": "Primary Weapon Skins",
+      "Description": "Choose a skin for primary weapons",
+      "SubOptions": [
+        {
+          "Name": "Default",
+          "Description": "Keep original appearance",
+          "Include": []
+        },
+        {
+          "Name": "Gold",
+          "Description": "Golden finish",
+          "Include": ["Primary Weapon Skins/Gold"],
+          "Image": "Primary Weapon Skins/Gold/preview.png"
+        },
+        {
+          "Name": "Carbon Fiber",
+          "Description": "Carbon fiber wrap",
+          "Include": ["Primary Weapon Skins/Carbon Fiber"],
+          "Image": "Primary Weapon Skins/Carbon Fiber/preview.png"
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Validation Rules
+
+### Required Fields
+
+- `Version` must be `1`
+- `Guid` must be valid UUID format
+- `Name` must be non-empty string
+- `Description` must be present (can be empty)
+
+### Option Rules
+
+- If `Options` array exists, it must contain at least one option
+- Each option must have `Name` and `Description`
+- Each option must have `Include` OR `SubOptions` (at least one)
+
+### Path Rules
+
+- All paths are relative to the mod root folder
+- Paths are case-sensitive
+- Use forward slashes (`/`) as separators
+- No leading or trailing slashes
+
+## Build-Time Cleaning
+
+When building, the manifest is cleaned:
+
+- Empty `Description` fields are kept (required)
+- Empty `IconPath` is removed
+- Empty `Image` fields are removed

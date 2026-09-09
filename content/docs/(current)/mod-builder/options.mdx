@@ -1,0 +1,76 @@
+---
+title: Options
+description: Option cards, include folders, colors, and sub-options in the Mod Builder.
+icon: SlidersHorizontal
+---
+
+Options are independent of the file tree. Create them with **Add Option**, then attach folders with **Include Folders**.
+
+A pack can have **no options**. In that case only root files (and any unmapped folders in the zip) matter. Arsenal treats a missing `Options` array as a simple mod.
+
+## Option card
+
+Each option has a colored header and a body you can collapse.
+
+| Control | What it does |
+|---------|----------------|
+| Drag handle | Reorder options. Order in this list is order in the manifest |
+| Color picker | Visual accent in the builder only. Not written to `manifest.json` |
+| Name in the header | Mirrors the **Name** field |
+| Chevron | Collapse or expand the card |
+| Trash | Delete the option and its sub-options |
+
+Inside the body:
+
+| Field | Limit | Notes |
+|-------|-------|--------|
+| Thumbnail | Image | Click to pick. **X** removes it. Written as `Image` in the manifest |
+| Name | 60 characters | Required to build |
+| Description | None | Required as a field. An empty string is allowed |
+| Include Folders | One or more paths | Folders from **MOD STRUCTURE** to deploy when this option is on |
+| Sub-Options | Nested cards | Optional. Use for exclusive variants under one option |
+
+An option may have include folders, sub-options, or both. Build **warns** if it has neither.
+
+## Include Folders
+
+Click **Select Folders** on an option or sub-option. The dialog lists **every folder path** in the tree (any depth), with checkboxes and a search field.
+
+1. Filter with **Search folders...** if the tree is large
+2. Check the folders this choice should install
+3. Click **Confirm**
+
+The button shows a numeric badge for how many paths are selected. If the project has no folders yet, the dialog shows **No folders available**.
+
+Paths are relative to the mod root and use `/`:
+
+| Tree | Include path |
+|------|----------------|
+| `Ultra` | `Ultra` |
+| `Weapons` > `Gold` | `Weapons/Gold` |
+
+You can include a parent and a child independently. Including a folder means Arsenal looks in that folder (and typically its contents) for patch files when the option is enabled.
+
+Renaming a folder in the tree rewrites matching include paths. Deleting a folder removes that path and any nested paths from every option.
+
+## Sub-options
+
+On an option card, **Add Sub-Option** creates a nested choice. Sub-options have the same name, description, thumbnail, and include controls. They cannot contain further sub-options.
+
+| Control | What it does |
+|---------|----------------|
+| Drag handle | Reorder within the parent, or **drag onto another option** to move it |
+| Chevron | Collapse the sub-option body |
+| Trash | Delete only that sub-option |
+
+Sub-options inherit the parent option's accent color.
+
+Typical pattern: the parent has a name and description, no include of its own, and each sub-option maps one variant folder.
+
+## Colors
+
+New options cycle through a preset palette. You can pick any color with the header color control. Color is stored in the **project** (metadata version 2) so it comes back on import. It is not part of the built `manifest.json`.
+
+## Empty state
+
+With zero options, the panel title stays **OPTIONS** and the list shows **No options yet**, with a hint to use `+` and then assign folders from the structure.

@@ -1,0 +1,149 @@
+---
+title: Overview
+description: How Arsenal loads community language packs and falls back to English.
+icon: Info
+---
+
+Arsenal features an open localization system that enables anyone to create, modify, or replace language packs. This system reduces development burden and enables community contributions.
+
+## The Localization System
+
+The system provides:
+
+- **Open access** to translation strings
+- **Hot-reloading** after application restart
+- **Community-driven** language support
+- **Easy customization** including meme/joke variants
+
+### Natively Supported Languages
+
+Three languages are maintained officially:
+
+| Language | Code |
+|----------|------|
+| English | `en-GB` |
+| Italian | `it-IT` |
+| Chinese | `zh-CN` |
+
+## How It Works
+
+### Location
+
+Language packs reside in the `resources/locale` folder within your Arsenal installation:
+
+<Files>
+  <Folder name="HD2Arsenal" defaultOpen>
+    <Folder name="resources" defaultOpen>
+      <Folder name="locale" defaultOpen>
+        <Folder name="en-GB" />
+        <Folder name="it-IT" />
+        <Folder name="zh-CN" />
+        <Folder name="de-DE" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+### Detection
+
+On startup, Arsenal:
+
+1. Scans the `locale` folder for language packs
+2. Reads each subfolder's `_manifest.json`
+3. Validates the language pack structure
+4. Makes valid languages available in Settings
+
+### Selection
+
+Users select their preferred language in Settings. The application:
+
+1. Loads translation files specified in the manifest
+2. Applies translations to the interface
+3. Falls back to English for missing strings
+
+## Pack Structure
+
+Each language pack requires:
+
+<Files>
+  <Folder name="xx-XX" defaultOpen>
+    <File name="_manifest.json" />
+    <File name="flag.png" />
+    <File name="[your translation files]" />
+  </Folder>
+</Files>
+
+<Callout title="Note">
+  The file organization shown below is the official structure, but you can organize your translations differently. You can use a single file, different folder structures, or any organization that works for you. The important thing is to include all your translation files in the `files` array within `_manifest.json`.
+</Callout>
+
+**Official structure example:**
+
+<Files>
+  <Folder name="xx-XX" defaultOpen>
+    <File name="_manifest.json" />
+    <File name="flag.png" />
+    <Folder name="translations" defaultOpen>
+      <File name="dialogs.json" />
+      <File name="menus.json" />
+      <File name="misc.json" />
+      <File name="notifications.json" />
+      <File name="onboarding.json" />
+      <File name="settings.json" />
+      <File name="tutorials.json" />
+      <File name="ui.json" />
+    </Folder>
+  </Folder>
+</Files>
+
+### Manifest File
+
+The `_manifest.json` defines the language pack:
+
+```json
+{
+    "label": "English",
+    "languageCode": "en",
+    "countryCode": "GB",
+    "flag": "flag.png",
+    "files": [
+        "translations/ui.json",
+        "translations/dialogs.json",
+        "..."
+    ]
+}
+```
+
+The `files` array must list all translation files that contain your translations, regardless of how you organize them.
+
+### Translation Files
+
+JSON files containing key-value pairs:
+
+```json
+{
+    "navbar-label-home": "HOME",
+    "tooltip-deploy": "Deploy active mods",
+    "notification-success": "Operation completed"
+}
+```
+
+## Fallback Behavior
+
+When a translation key is missing:
+
+1. Check selected language
+2. If not found - Fallback to English
+3. If not found - Display the key itself
+
+This ensures the interface remains functional even with incomplete translations.
+
+## Why Contribute?
+
+Your language pack can help:
+
+- Non-English speakers use Arsenal comfortably
+- Regional communities access the mod manager
+- Preserve cultural accessibility in gaming tools
+
+High-quality contributions may be considered for inclusion as officially supported languages in future releases.

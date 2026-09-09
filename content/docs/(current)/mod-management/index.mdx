@@ -1,0 +1,124 @@
+---
+title: Overview
+description: Library, profiles, and the Arsenal mod list interface.
+icon: Info
+---
+
+Arsenal stores every imported mod in a shared **Library**, then lets you assemble those mods into one or more **profiles**. Each profile has its own membership, enable state, option selections, and load order.
+
+You switch between these views from the **sidebar**, not from a toggle in the mod list toolbar.
+
+## Library
+
+The Library is the full collection of mods Arsenal has imported. Open it with the **Library** button in the sidebar.
+
+Use the Library to:
+
+- Import new mods from folders, archives, Nexus Mods, or drag and drop
+- See which profiles already use a mod
+- Add mods to one or more profiles
+- Check Nexus Mods for updates
+- Permanently delete mods from disk
+
+The Library does not enable or deploy mods. Deployment always happens from a profile.
+
+## Profile view
+
+Each profile is a named configuration of your library. Click a profile icon in the sidebar to open it.
+
+This is where you:
+
+- Enable or disable mods with the row toggle
+- Reorder mods (and separators) to control load priority
+- Configure options for mods that support them
+- Inspect file conflicts
+- **Deploy** enabled mods into the Helldivers 2 game directory
+- Launch the game
+
+The header of the table shows the current profile as a **badge** (name plus optional image). Click the badge or its gear icon to duplicate, rename, change the image, or delete that profile. The Default profile cannot be renamed or deleted.
+
+## Toolbar
+
+Both views share search, tag filters, separators, purge, and launch. **Deploy** is only available in a profile.
+
+| Control | Library | Profile | Function |
+|---------|---------|---------|----------|
+| Filter | Yes | Yes | Filter the list by tags |
+| Search | Yes | Yes | Find mods by name, description, UUID, or version |
+| Add Separator | Yes | Yes | Create a visual divider in the current list |
+| Add Mod | Yes | Yes | Import files or folders, open Nexus Mods, or (in a profile) pick from the Library |
+| Purge | Yes | Yes | Remove deployed files from the game `data` folder |
+| Deploy | No | Yes | Install the current profile's enabled mods |
+| Run Game | Yes | Yes | Launch Helldivers 2 |
+
+## Mod list table
+
+Each row is either a **mod** or a **separator**.
+
+| Column | Description |
+|--------|-------------|
+| Selection | Circle checkbox for multi-select. Hidden while a tag filter is active. |
+| Index | Position in the current list. This is the load order in a profile. |
+| Icon | Thumbnail, optional **NEW** badge, and (in a profile) deployment status. |
+| Info | Label, description, and Nexus Mods metadata when available. |
+| Actions | View-specific buttons. See [Actions](/mod-management/actions). |
+
+### Profile rows
+
+| Control | Action |
+|---------|--------|
+| Toggle | Enable or disable the mod for this profile. Only enabled mods deploy. |
+| Conflicts | Opens conflict details when Arsenal has found overlapping patch files. Hidden otherwise. |
+| Download update | Shown when a newer Nexus Mods file is known. Becomes **Install** after that download finishes. |
+| Check for updates | Queries Nexus Mods for a newer file. Disabled when the mod has no Nexus Mods identity. |
+| Options | Opens option / sub-option selection. Disabled when the mod has no options. |
+| More (three dots) | Dropdown of extra actions |
+
+Click the pencil next to a label to rename the mod. The new name is stored in the Library and appears in every profile.
+
+Hover the icon and click the eye overlay to preview the thumbnail at full size.
+
+### Library rows
+
+| Control | Action |
+|---------|--------|
+| Download update / Check for updates | Same Nexus Mods flow as in a profile |
+| Add to profiles | Attach this Library mod to one or more profiles |
+| Open folder | Reveal files on disk |
+| Delete | Permanent Library delete (confirmation required) |
+
+Library rows have no enable toggle, options button, or conflict button.
+
+### Deployment status
+
+In a profile, the ring around the icon reports deploy state:
+
+| Ring | Meaning |
+|------|---------|
+| **<span style={{ color: "#00c853" }}>Green</span>** | Deployed and unchanged. No pending profile changes. |
+| **<span style={{ color: "#fea500" }}>Yellow / orange</span>** | Deployed, but the profile changed since the last deploy (needs redeploy). |
+| **<span style={{ color: "#e24327" }}>Red</span>** | Not currently deployed. |
+
+Newly imported mods also show a **NEW** badge until you hover the row.
+
+### Nexus Mods metadata
+
+When a mod was installed through Nexus Mods, the info column can show:
+
+| Field | Description |
+|-------|-------------|
+| Version | Installed file version |
+| Date | Release date of that file (format follows Settings) |
+| Link | Opens the Nexus Mods page |
+
+## Keyboard shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl + F` | Focus search and select the current query |
+| `Escape` | Clear search and unfocus (when the field is focused) |
+| `Shift` + click | Select a range of mods between the last clicked row and the current one |
+
+## First-run tutorial
+
+On first use, Arsenal can walk through Library import, the download panel, profiles, separators, enable, deploy, and launch. You can replay that tutorial from **Settings > Mod Management**.

@@ -1,0 +1,104 @@
+---
+title: Listing
+description: Search, filter, and join public Arsenal lobbies.
+icon: List
+---
+
+After Discord sign-in, Lobby opens on the **listing**: a live table of rooms plus the social sidebar.
+
+The list refreshes on its own every few seconds. Click **Refresh** to fetch immediately.
+
+## Toolbar
+
+| Control | Action |
+|---------|--------|
+| Refresh | Reload the list |
+| Search | Filter by lobby name or host name. Placeholder: **Search by lobby or host name...**. `Ctrl + F` focuses the field. `Escape` clears it |
+| Filter | Opens **Filter Lobbies**. The button stays highlighted while filters are active |
+| Create | Opens **Create Lobby**. See [Rooms](/lobby/rooms) |
+
+The toolbar is disabled while the list is loading or in an error state.
+
+## List
+
+The header shows the lobby count. Click the name column to sort ascending, descending, or clear the sort.
+
+Up to **20** lobbies per page. Use the page chevrons when there is more than one page.
+
+### Row layout
+
+| Column | Meaning |
+|--------|---------|
+| Lock | Password protected vs open |
+| Box | **Mods required** vs no mods flag |
+| Faction | Terminids, Automatons, or Illuminates |
+| Body | Lobby name, region badge, host name (with clan tag and role) |
+| Difficulty | Icon. Hover for the level name |
+| Players | Current / maximum. Full rooms are marked and cannot be joined |
+| Join | Arrow button |
+
+Region badges:
+
+| Badge | Region |
+|-------|--------|
+| EUW | Europe West |
+| EUE | Europe East |
+| NAE | North America East |
+| NAW | North America West |
+| SA | South America |
+| AS | Asia |
+| OCE | Oceania |
+
+### Empty, loading, error
+
+| State | What you see |
+|-------|----------------|
+| Loading | **Loading lobbies...** |
+| Error | **Connection error**, then **Retry** |
+| Empty | **No lobbies found**. Change search or filters, or create a room |
+
+## Filters
+
+**Filter Lobbies** / **Select which lobbies to display.**
+
+| Section | Options |
+|---------|---------|
+| Region | Europe West, Europe East, North America East, North America West, South America, Asia, Oceania |
+| Faction | Terminids, Automatons, Illuminates |
+| Difficulty | Levels 1 through 10 |
+| Mods | Any, With mods, Without mods |
+| Password | Any, With password, Without password |
+| Other | **Hide full lobbies** |
+
+**Apply Filters** sends the selection to the server and resets to page 1. **Reset Filters** is available when anything is active.
+
+Difficulty names:
+
+| Level | Name |
+|-------|------|
+| 1 | Trivial |
+| 2 | Easy |
+| 3 | Medium |
+| 4 | Challenging |
+| 5 | Hard |
+| 6 | Extreme |
+| 7 | Suicide Mission |
+| 8 | Impossible |
+| 9 | Helldive |
+| 10 | Super Helldive |
+
+## Join
+
+1. Click the join arrow on a row
+2. If the room is password protected, enter the password in **Password Required** and click **Join**
+3. Wait for **Joining lobby...**
+
+| Problem | Message |
+|---------|---------|
+| Room gone | This lobby no longer exists or has been closed. |
+| Full | This lobby is full. |
+| Banned from that room | You are banned from this lobby and cannot rejoin. |
+| Wrong password / other | Failed to join the lobby. Please try again. |
+| Server timeout | Server not responding |
+
+A successful join opens the [room](/lobby/rooms).

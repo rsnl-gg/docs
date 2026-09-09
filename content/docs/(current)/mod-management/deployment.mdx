@@ -1,0 +1,140 @@
+---
+title: Deployment
+description: Deploy, purge, load order, conflicts, and troubleshooting for Helldivers 2.
+icon: Rocket
+---
+
+**Deploy** copies the current profile's **enabled** mods into the Helldivers 2 `data` directory. **Purge** removes those installed files. Neither action deletes mods from the Arsenal Library.
+
+Deploy is only on the profile toolbar. Purge is on both Library and profile toolbars, because it operates on the game folder, not on a specific list.
+
+## Before you deploy
+
+1. Open the profile you want in-game
+2. Enable the mods you need
+3. Set options
+4. Order the list for the priority mode you use in Settings
+5. Close Helldivers 2 if it is running
+
+Click **Deploy**, then **Confirm Deploy**. A progress bar lists each enabled mod. When it finishes, launch from the skull button or from the game client.
+
+Disabled mods and separators are skipped. Only files from enabled options (and their selected sub-options) are copied.
+
+## What deploy does
+
+1. Reads the open profile in list order
+2. Resolves each UUID against the Library (files, options)
+3. Copies patch files into the game `data` folder, applying load-order priority
+4. Marks those mods **deployed** and clears the "changed" flag
+
+If the game directory is not set, Arsenal sends you to **Settings > Directories** so you can pick the Helldivers 2 root (the folder that contains `bin` and `data`).
+
+## Status on each icon
+
+| Ring | Meaning |
+|------|---------|
+| **<span style={{ color: "#00c853" }}>Green</span>** | Deployed and unchanged. No pending profile changes. |
+| **<span style={{ color: "#fea500" }}>Yellow / orange</span>** | Deployed, but the profile changed since the last deploy (needs redeploy). |
+| **<span style={{ color: "#e24327" }}>Red</span>** | Not currently deployed. |
+
+Redeploy after you:
+
+- Enable or disable mods
+- Reorder the profile
+- Change options
+- Add, update, or remove mods that were part of the last deploy
+
+## Load-order priority
+
+When two enabled mods include the same file, the **later write wins**. Settings control which end of the list is written last:
+
+| Setting | Who wins |
+|---------|----------|
+| **Set first mod to highest priority** | Position 1 is deployed last, so it overrides everything below it |
+| **Set last mod to highest priority** (default) | The bottom enabled mod is deployed last and overrides earlier rows |
+
+```
+Example (default: last mod wins)
+
+#1  Mod A  texture.patch_0
+#2  Mod B  other.patch_0
+#3  Mod C  texture.patch_0
+
+Mod A and Mod C both ship texture.patch_0.
+With "last mod highest priority", Mod C is the file that remains in data/.
+With "first mod highest priority", Mod A remains instead.
+```
+
+Put foundation packs toward the low-priority end and overrides toward the high-priority end. Conflict warnings (see [Actions](/mod-management/actions)) show overlaps but do not block deploy.
+
+<Callout title="Note">
+  Conflict warnings are informational. Overlap does not always mean the mods are incompatible. Many packs are meant to stack. Treat the dialog as a map of overlapping files, then reorder, disable, or change options as you prefer.
+</Callout>
+
+## Purge
+
+1. Click **Purge**
+2. Read the confirmation (this cannot un-delete files from `data/`)
+3. Click **Confirm Purge**
+
+Use purge when you want a vanilla `data` folder: before a big profile swap, while isolating a crash, or before a game update.
+
+<Callout title="Note">
+  Purge does not remove mods from Arsenal. Profiles and the Library stay as they were. Deploy again to put files back.
+</Callout>
+
+Arsenal also purges automatically if you **remove a deployed mod from a profile** (single or bulk). That keeps leftover patch files from sitting in `data/` after the profile no longer includes them.
+
+## Launch
+
+The Helldivers skull button starts the game. While Arsenal believes the process is running, the button shows a running state and ignores extra clicks. Set the game directory first if launch fails.
+
+## Related settings
+
+Under **Settings > Mod Management**:
+
+| Setting | Effect |
+|---------|--------|
+| Automatically Activate Mods After Upload | New imports start enabled in the target profile |
+| Automatically Activate All Mods Options After Upload | All options start enabled on those new imports |
+| First vs last mod highest priority | Deploy write order |
+| Replay Tutorial | Runs the Library / profile walkthrough again |
+
+Under **Settings > Directories**, confirm:
+
+- Helldivers 2 install (must contain `bin` and `data`)
+- Arsenal mods storage folder
+- Temporary folder used during extract and deploy
+
+## Troubleshooting
+
+### Mods not visible in-game
+
+1. Confirm the correct **profile** is open
+2. Confirm each mod is **enabled**
+3. Confirm the icon ring is **green** (deploy after yellow/orange)
+4. Confirm the game path in Settings
+5. Launch after deploy has finished
+
+### "Game directory not set"
+
+Pick the Helldivers 2 root in Settings. Deploy and purge both require it.
+
+### Deploy is slow
+
+Expected on a first deploy, on large texture packs, and when many files are replaced. Watch the progress bar; canceling mid-copy can leave `data/` inconsistent, in which case purge and deploy again.
+
+### Crash after deploy
+
+1. Purge and confirm the vanilla game starts
+2. Enable a small batch, deploy, test
+3. Repeat until you find the pack or option that fails
+4. Check conflict warnings for that batch and adjust order or options
+
+### Removing a mod emptied the game mods
+
+If that mod was deployed, Arsenal purged `data/` on purpose. Deploy the profile again.
+
+### Library and game disagree
+
+The Library is the source of files. The game folder only reflects the last successful deploy of a profile. Switching profiles in the sidebar does **not** change `data/` until you deploy (or purge).

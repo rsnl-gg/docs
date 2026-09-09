@@ -1,0 +1,98 @@
+---
+title: Rooms
+description: Create a lobby, manage players and chat, invite, and host tools.
+icon: DoorOpen
+---
+
+A **room** is a live session: players, chat, a shared mod list, and deploy / launch controls. You enter it by joining from the [listing](/lobby/listing) or by creating a lobby.
+
+## Create Lobby
+
+Click **Create** on the listing.
+
+| Field | Default | Notes |
+|-------|---------|--------|
+| Lobby Name | (empty, placeholder **My Lobby**) | Required. Maximum 40 characters |
+| Region | Europe West | Same regions as the listing filters |
+| Difficulty | 1 Trivial | Levels 1 through 10 |
+| Faction | Terminids | Terminids, Automatons, or Illuminates |
+| Password | empty | Optional. Leave empty for a public room |
+| Mods required | Off | Listing badge only. It does not add mods by itself |
+
+Click **Create**. The loader shows **Creating lobby...**. You enter the room as **host** with an empty mod list. Configure mods in [Mod Sync](/lobby/mod-sync).
+
+**Mods required** means the listing shows the filled box icon. Guests are not blocked from joining without those files. The host still chooses the actual loadout in the room.
+
+## Room layout
+
+| Area | Contents |
+|------|----------|
+| Header | Leave, faction, name, difficulty, mute sounds, and (host) edit settings |
+| Players | Occupied slots, empty slots, deploy badges, host crown |
+| Chat | Messages, emoji, join/leave notices |
+| Mods | Shared loadout plus Purge, Deploy, and Launch |
+| Host Friend Code | Copy the host's Helldivers 2 friend code |
+
+Mute is remembered between sessions.
+
+Closing Arsenal while you are in a room asks for confirmation. Leaving the room also asks **Are you sure you want to leave this lobby?**
+
+## Host vs guest
+
+| Action | Host | Guest |
+|--------|------|-------|
+| Edit lobby settings | Yes | No |
+| Configure and reorder mods | Yes | No |
+| Set mod options | Yes | View only |
+| Download missing mods | / | Yes |
+| Deploy, Purge, Launch | Yes | Yes |
+| Edit the displayed friend code | Yes | Copy only |
+| Kick, ban, transfer leadership | Yes | No |
+| Invite from an empty slot | Yes | No |
+
+## Players
+
+Each filled slot shows avatar, clan tag, name, role, and a deploy badge (`deployed / total`).
+
+| Badge color | Meaning |
+|-------------|---------|
+| **<span style={{ color: "#00c853" }}>Green</span>** | Every lobby mod is deployed and unchanged |
+| **<span style={{ color: "#fea500" }}>Yellow / orange</span>** | Deployed, but something changed since last deploy |
+| **<span style={{ color: "#e24327" }}>Red</span>** | Not fully deployed |
+
+Empty slots are labeled **Empty slot**. The host clicks **+** to **Invite Players** (online **Friends** and **Clan Members**, with search). **Send Invites** confirms.
+
+Incoming invites elsewhere show **Lobby Invitation** with **Join** or **Decline** (auto-dismiss after 30 seconds).
+
+### Host moderation
+
+Right-click another player:
+
+| Action | Confirm |
+|--------|---------|
+| Make Leader | Transfer Leadership |
+| Kick Player | They leave the room and can rejoin |
+| Ban Player | They cannot rejoin that lobby |
+
+The target sees **Kicked** or **Banned**.
+
+## Chat
+
+Type in **Type a message...**. Maximum **200** characters. Messages are logged for moderation purposes.
+
+Nexus Mods URLs in chat open externally. Emoji picker and autocomplete are on the input.
+
+While scrolled up, a pill shows **new message** / **new messages**. Unread counts also appear on the sidebar Lobby button when you leave the Lobby menu.
+
+## Edit settings
+
+The host gear opens **Edit Lobby Settings** (same fields as create). Leave the password blank to keep the current one. **Show/Hide password** toggles visibility. **Save Changes** applies.
+
+## Friend code
+
+**Host Friend Code** is for adding each other in Helldivers 2, not for joining the Arsenal room.
+
+| Action | Who |
+|--------|-----|
+| Copy | Anyone, by clicking the code |
+| Edit Friend Code | Host: set all 8 digits, or **Remove Friend Code** |

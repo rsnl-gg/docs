@@ -1,0 +1,134 @@
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", monospace;
+  --color-fd-primary: #fee800;
+  --color-fd-primary-foreground: #000000;
+}
+
+html {
+  scrollbar-gutter: stable;
+  background-color: #0a0a0a;
+}
+
+body {
+  background-color: transparent;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: #0a0a0a;
+  background-image: url("/assets/rsnl_docs_bg.webp");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+html > body[data-scroll-locked] {
+  margin-right: 0px !important;
+  --removed-body-scroll-bar-size: 0px !important;
+}
+
+.dark {
+  --color-fd-background: #0a0a0a;
+  --color-fd-foreground: #cfcfcf;
+  --color-fd-muted: #171717;
+  --color-fd-muted-foreground: #888888;
+  --color-fd-popover: #171717;
+  --color-fd-popover-foreground: #cfcfcf;
+  --color-fd-card: #101010;
+  --color-fd-card-foreground: #cfcfcf;
+  --color-fd-border: #2a2a2a;
+  --color-fd-primary: #fee800;
+  --color-fd-primary-foreground: #000000;
+  --color-fd-secondary: #171717;
+  --color-fd-secondary-foreground: #cfcfcf;
+  --color-fd-accent: #2a2a2a;
+  --color-fd-accent-foreground: #cfcfcf;
+  --color-fd-ring: #fee800;
+  --color-fd-overlay: hsla(0, 0%, 0%, 0.7);
+}
+
+.dark #nd-sidebar {
+  --color-fd-muted: #1a1a1a;
+  --color-fd-secondary: #171717;
+  --color-fd-muted-foreground: #888888;
+}
+
+::selection {
+  background-color: #fee800;
+  color: #000000;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #101010;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #fee800;
+  border-radius: 7px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in srgb, #fee800 85%, black);
+}
+
+#nd-sidebar,
+#nd-toc,
+#nd-subnav {
+  font-family: var(--font-mono);
+}
+
+#nd-page h1,
+#nd-page h2,
+#nd-page h3,
+#nd-page h4 {
+  font-family: var(--font-mono);
+  letter-spacing: 0.01em;
+}
+
+#nd-page h1 {
+  width: fit-content;
+  padding-bottom: 0.4em;
+  margin-bottom: 0.15em;
+  border-bottom: 3px solid #fee800;
+}
+
+#nd-page strong {
+  color: #fee800;
+  font-weight: 700;
+}
+
+#nd-docs-layout {
+  background-color: transparent;
+}
+
+#nd-sidebar {
+  background-color: rgb(10 10 10 / 0.55);
+  backdrop-filter: blur(16px);
+}
+
+#nd-subnav {
+  border-bottom-color: #fee800;
+  border-bottom-width: 2px;
+}

@@ -1,0 +1,194 @@
+---
+title: Actions
+description: Row actions, multi-select, options, conflicts, and Nexus Mods tools.
+icon: MousePointerClick
+---
+
+Row buttons and menus change with the view. Profile rows configure a loadout. Library rows manage the shared collection.
+
+## Profile row actions
+
+| Control | Action |
+|---------|--------|
+| Toggle | Enable or disable the mod for this profile. Only enabled mods deploy. |
+| Conflicts | Opens conflict details when Arsenal has found overlapping patch files. Hidden otherwise. |
+| Download update | Shown when a newer Nexus Mods file is known. Becomes **Install** after that download finishes. |
+| Check for updates | Queries Nexus Mods for a newer file. Disabled when the mod has no Nexus Mods identity. |
+| Options | Opens option / sub-option selection. Disabled when the mod has no options. |
+| More (three dots) | Dropdown of extra actions |
+
+Rapid individual toggles are batched so the UI stays responsive. After a toggle, conflict highlights refresh.
+
+### More actions (profile)
+
+| Action | Description |
+|--------|-------------|
+| **Copy to Profiles** | Add this mod to other profiles. It stays in the current one. |
+| **Edit Tags** | Change Library tags. |
+| **Show Folder** | Open the mod folder in the system file manager. |
+| **Copy Download Link** | Nexus Mods file URL (only if `modId` and `fileId` are known). |
+| **Copy Link with Settings** | Same URL plus this profile's enabled options. |
+| **Remove from Profile** | Drop the mod from this profile. Files stay in the Library. |
+| **Delete from Library** | Permanently delete files and remove the mod from every profile. |
+
+Nexus Mods metadata sits on the row itself:
+
+| Field | Description |
+|-------|-------------|
+| Version | Installed file version |
+| Date | Release date of that file (format follows Settings) |
+| Link | Opens the Nexus Mods page |
+
+## Library row actions
+
+| Control | Action |
+|---------|--------|
+| Download update / Check for updates | Same Nexus Mods flow as in a profile |
+| Add to profiles | Attach this Library mod to one or more profiles |
+| Open folder | Reveal files on disk |
+| Delete | Permanent Library delete (confirmation required) |
+
+Library rows have no enable toggle, options button, or conflict button.
+
+## Context menu
+
+Right-click any row. The menu is not shown while the list is scrolling.
+
+**Mods**
+
+| Action | Library | Profile |
+|--------|---------|---------|
+| Copy Mod UUID | Yes | Yes |
+| Move to Top / Bottom / Specific Position | Yes | Yes |
+| Add to Profiles / Copy to Profiles | Yes | Yes |
+| Edit Tags | No | Yes |
+| Show Folder | Yes | Yes |
+| Copy Download Link | If Nexus Mods data exists | If Nexus Mods data exists |
+| Copy Link with Settings | No (options are profile-specific) | If Nexus Mods data exists |
+| Remove from Profile | No | Yes |
+| Delete from Library | Yes | Yes |
+
+**Separators:** move commands, Edit Separator, Delete Separator.
+
+## Multi-selection
+
+Select with the circle on each row, or the circle in the table header (visible mods only, separators excluded). Hold **Shift** and click to select a contiguous range from the last clicked row.
+
+The bar at the bottom shows `selected / selectable` and a close button to clear the selection.
+
+### Profile selection bar
+
+| Action | Description |
+|--------|-------------|
+| Edit Tags | Replace tags on all selected mods |
+| Toggle | If none are enabled, enable all. If all are enabled, disable all. Otherwise follow the majority. |
+| Check for updates | Query Nexus Mods for each selected mod that has Nexus data |
+| Copy download links | Clipboard list of names and URLs |
+| Copy links with settings | Same, including enabled options, separated by a divider |
+| Copy to Profiles | Copy onto other profiles |
+| Remove | Remove from this profile (not from disk) |
+
+### Library selection bar
+
+| Action | Description |
+|--------|-------------|
+| Edit Tags | Replace tags on the selection |
+| Check for updates | Query Nexus Mods |
+| Add to Profiles | Attach to one or more profiles |
+| Delete from Library | Permanent delete of every selected mod |
+
+If a bulk copy or Nexus action finds nothing applicable (for example no selected mod has Nexus data), Arsenal notifies you and does nothing.
+
+## Mod options
+
+Options come from the mod's `manifest.json`. Open them with the sliders button on a profile row.
+
+| Control | Behavior |
+|---------|----------|
+| Options | Checkboxes. Several can be on at once. |
+| Sub-options | Radio buttons: one choice per parent option. |
+| Enable an option that has sub-options | Expands that group and selects the first sub-option if none is selected. |
+| Disable an option | Clears its sub-options. |
+| Preview | Eye overlay on option images, same as mod thumbnails. |
+
+Confirm writes the selection onto **this profile only**. The icon ring turns yellow/orange if the mod was already deployed, as a reminder to deploy again.
+
+<Callout title="Note">
+  Option state is per profile. The same Library mod can use different options in different profiles.
+</Callout>
+
+## Conflict detection
+
+In a profile, Arsenal compares enabled patch files (including files that belong to enabled options and sub-options) and marks overlapping mods with a warning icon.
+
+Click the icon for a dialog that lists each conflicting mod, sorted by list index, with:
+
+- Load-order number and that mod's deploy status color
+- How many files overlap
+- **Where** the overlap is: Root, a named option, or `Option > Sub-option`
+- Whether that location is currently enabled (disabled pairs are visually muted)
+- Expand / collapse per conflicting mod
+
+<Callout title="Note">
+  Conflict warnings are informational. Overlap does not always mean the mods are incompatible. Many packs are meant to stack. Treat the dialog as a map of overlapping files, then reorder, disable, or change options as you prefer.
+</Callout>
+
+### Resolving conflicts
+
+| Approach | Effect |
+|----------|--------|
+| Reorder | Change which enabled mod is deployed last (or first), according to Settings |
+| Disable a mod | It no longer deploys and drops out of the live conflict set |
+| Change options | Conflicts that only exist in a disabled option no longer apply at deploy time |
+| Leave them | Harmless overlaps can be ignored |
+
+## Nexus Mods tools
+
+### Copy Download Link
+
+Copies a manager-style file URL:
+
+```
+https://www.nexusmods.com/helldivers2/mods/123?tab=files&file_id=456&nmm=1
+```
+
+### Copy Link with Settings
+
+```
+MOD NAME
+Download Link: https://www.nexusmods.com/helldivers2/mods/123?tab=files&file_id=456&nmm=1
+
+Enabled Options:
+- Option A
+- Option B > Sub-option 1
+```
+
+Bulk copy with settings joins several mods with a `=` divider.
+
+### Check for updates
+
+Uses the Nexus Mods API for that `modId` / `fileId`. If a newer file exists, the download-update button appears and Check for Updates hides. If nothing is newer, Arsenal says so.
+
+Bulk check reports how many of the selected Nexus Mods entries have an update.
+
+### Download and install the update
+
+See [Adding Mods](/mod-management/adding-mods) for Premium in-app download, the Downloads panel, and installing from the row button once the queue item completes.
+
+## Remove versus delete
+
+### Remove from Profile
+
+The mod leaves the current profile and stays in the Library. You can add it back later.
+
+If the mod was **deployed**, Arsenal **purges** all deployed files from the game directory after removal. Enable and deploy again to restore a loadout. The same purge happens after a bulk remove if any selected mod was deployed.
+
+### Delete from Library
+
+Available in the Library, in the profile more-actions menu, and on the right-click menu in both views.
+
+This deletes the files and removes the UUID from **every** profile. It cannot be undone.
+
+<Callout type="warn" title="Warning">
+  Library delete is permanent. Confirm the dialog only when you intend to discard the files.
+</Callout>
