@@ -1,0 +1,5 @@
+{
+  "title": "Language Packs",
+  "icon": "Languages",
+  "pages": ["index", "creating-packs", "translation-files", "distribution"]
+}

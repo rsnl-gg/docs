@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://docs.rsnl.gg/sitemap.xml
+
+Crawl-delay: 1
+
+# Search API is not meant for indexing
+Disallow: /api/

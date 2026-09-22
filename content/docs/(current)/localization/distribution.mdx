@@ -1,0 +1,107 @@
+---
+title: Distribution
+description: Package, share, and optionally submit Arsenal language packs.
+icon: Share2
+---
+
+This guide covers packaging and sharing language packs with the Arsenal community.
+
+## Packaging
+
+### Contents
+
+Package your entire language folder. The structure below is an example, you can organize your files differently:
+
+<Files>
+  <Folder name="de-DE" defaultOpen>
+    <File name="_manifest.json" />
+    <File name="flag.png" />
+    <Folder name="translations" defaultOpen>
+      <File name="dialogs.json" />
+      <File name="menus.json" />
+      <File name="misc.json" />
+      <File name="notifications.json" />
+      <File name="onboarding.json" />
+      <File name="settings.json" />
+      <File name="tutorials.json" />
+      <File name="ui.json" />
+    </Folder>
+  </Folder>
+</Files>
+
+### Creating a ZIP Archive
+
+1. Navigate to your `resources/locale/` folder
+2. Right-click your language folder (e.g., `de-DE`) and compress into a ZIP
+3. Name format: `HD2Arsenal-[Language]-[code].zip`
+
+Examples:
+
+- `HD2Arsenal-German-de-DE.zip`
+- `HD2Arsenal-French-fr-FR-v1.0.zip`
+
+## Installation Instructions
+
+As a convention, you should include these instructions for users in a `.txt` file:
+
+```
+Arsenal Language Pack Installation
+=====================================
+
+1. Locate your Arsenal installation folder
+2. Navigate to: resources/locale/
+3. Extract the language folder (e.g., de-DE) into this location
+4. Restart Arsenal
+5. Go to Settings and select your language
+```
+
+## Managing Updates
+
+When Arsenal updates with new strings:
+
+1. Compare your files against updated English files
+2. Add translations for new keys
+3. Update any changed keys
+4. Increment your version number
+
+## Quality Assurance
+
+### Before Distribution
+
+Verify:
+
+- All files present and valid JSON
+- Manifest correctly configured
+- Flag image displays properly
+- All strings translated
+- Placeholders preserved correctly
+- Tested in Arsenal
+
+### Testing Areas
+
+- Navigation menu
+- Settings page
+- All dialogs
+- Notifications/toasts
+- Tooltips
+- Context menus
+- Error messages
+- Mod Builder interface
+
+## Official Inclusion
+
+High-quality language packs may be considered for official inclusion in Arsenal.
+
+### Requirements
+
+- Complete translation coverage
+- Accurate and natural translations
+- Tested thoroughly
+- Maintained actively
+
+### How to Submit
+
+1. Join the [Official Discord](https://discord.rsnl.gg)
+2. Provide your language pack for review
+3. Respond to feedback and make improvements
+4. If accepted, your pack joins official releases

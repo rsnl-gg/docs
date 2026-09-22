@@ -1,0 +1,6 @@
+{
+  "title": "Legacy",
+  "description": "Arsenal 0.30.2 and earlier",
+  "root": "version",
+  "pages": ["index", "mod-builder"]
+}

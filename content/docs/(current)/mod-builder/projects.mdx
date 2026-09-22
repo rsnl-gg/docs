@@ -1,0 +1,94 @@
+---
+title: Projects and build
+description: Export, import, validate, and build a Mod Builder pack in Arsenal 0.36 and later.
+icon: Package
+---
+
+The builder keeps work in a temporary project folder. **Export** snapshots that work. **Build** writes a zip players can import. **Import** (or opening a `.hd2a_project` file) restores a snapshot.
+
+## Preview Manifest
+
+The code icon in the **OPTIONS** header opens a read-only JSON preview. It is the same cleaned Version 1 document that **Build** writes into the zip. Schema details are on [Manifest](/mod-builder/manifest).
+
+## Export
+
+**Export** saves a `.hd2a_project` archive (ZIP with a custom extension). The default file name looks like `HD2Arsenal_Project_YYYYMMDD_HHMMSS.hd2a_project`.
+
+The archive contains:
+
+| Entry | Role |
+|-------|------|
+| `metadata.json` | Builder state, **version 2** |
+| `manifest.json` | Generated V1 manifest |
+| Project files | The current folder tree and files |
+
+Version 2 metadata stores mod identity, the folder tree, root files, and the full options list (including colors, collapse state, and include paths).
+
+Export does not run the same blocking validation as Build. Finish identity and includes before you share a project if others need to build from it.
+
+## Import
+
+**Import** asks for a `.hd2a_project` file and replaces the current builder session.
+
+You can also open a `.hd2a_project` from the operating system. Arsenal loads it into the Mod Builder even if another menu was open.
+
+| Project | What happens |
+|---------|----------------|
+| Metadata **version 2** | Restores folders, files, options, and MOD DETAILS as saved |
+| Legacy (v1 `structure` field) | Migrates index-named folders to the option and sub-option **names**, remaps include paths, and assigns preset colors |
+
+If `metadata.json` or `manifest.json` is missing, import fails.
+
+## New Project
+
+**New Project** asks for confirmation, then:
+
+1. Clears the temporary project directory
+2. Resets folders, root files, and options
+3. Restores the default name and description
+4. Generates a new GUID
+
+Unexported work is discarded.
+
+## Build
+
+**Build** generates the V1 manifest, validates it, then asks where to save a `.zip` (default name `hd2_arsenal_mod.zip`).
+
+The zip contains:
+
+| Content | Source |
+|---------|--------|
+| Root files | Files at the project root |
+| Folder tree | The explorer tree, mirrored 1:1 |
+| Icon images | Mod icon plus option and sub-option images |
+| `manifest.json` | Cleaned Version 1 manifest |
+
+Empty folders are still created in the archive.
+
+## Validation
+
+Errors **block** the build. Warnings show the same dialog but offer **PROCEED WITH BUILD**.
+
+### Errors
+
+| Check | Message (English) |
+|-------|-------------------|
+| Missing GUID | GUID is required. |
+| GUID not UUID-shaped | GUID must be a valid format (e.g. `550e8400-e29b-41d4-a716-446655440000`). |
+| Empty mod name | Mod name is required. |
+| Description field missing (`null`) | Mod description is required. |
+| Option without a name | `{option}: Name is required.` |
+| Option description `null` | `{option}: Description is required.` |
+| Sub-option without a name | `{option}, {suboption}: Name is required.` |
+| Sub-option description `null` | `{option}, {suboption}: Description is required.` |
+
+An empty description string (`""`) is valid. The field must not be omitted.
+
+### Warnings
+
+| Check | Meaning |
+|-------|---------|
+| Option has no include folders and no sub-options | That option will not install any folder |
+| Sub-option include list is empty | That sub-option will not install any folder |
+
+Fix warnings when you can. Proceed only if you intentionally ship an option with no files (for example a "Default / off" choice).

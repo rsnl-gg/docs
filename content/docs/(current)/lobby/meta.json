@@ -1,0 +1,13 @@
+{
+  "title": "Lobby System",
+  "icon": "Users",
+  "defaultOpen": true,
+  "pages": [
+    "index",
+    "listing",
+    "rooms",
+    "mod-sync",
+    "friends",
+    "clans"
+  ]
+}

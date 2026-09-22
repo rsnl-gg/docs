@@ -1,0 +1,140 @@
+---
+title: Organization
+description: Tags, separators, search, load order, and the list minimap.
+icon: Tags
+---
+
+Arsenal gives you tags for filtering, separators for visual grouping, live search, and drag-and-drop load order. Separators also tint the rows beneath them and appear on the list minimap.
+
+## Tags
+
+Tags are stored on the Library entry, so they are the same in every profile. They exist so you can filter a long list.
+
+### Adding Tags to a Mod
+
+1. Click the **three-dot menu** on any mod
+2. Select **Edit Tags**
+3. Check the tags you want to apply
+4. Click **Confirm Tags**
+
+### Bulk tagging
+
+1. Select several mods
+2. Click the **tags** button on the multi-selection bar
+3. Choose tags and confirm
+
+The chosen set **replaces** existing tags on every selected mod (separators are skipped).
+
+### Filter by tags
+
+1. Click the funnel button in the toolbar
+2. Select one or more tags
+3. Click **Apply Filter**
+
+The funnel fills in when a filter is active. **Reset Filter** (or clearing every tag) restores the full list.
+
+While a tag filter is on, row selection checkboxes are hidden, because the list is no longer the complete order.
+
+## Separators
+
+Separators are labeled color bars you can place between mods. Each view has its own separators: Library separators do not appear in profiles, and profile separators stay in that profile.
+
+### Create a separator
+
+1. Click **Add Separator** (expand-arrows icon)
+2. Enter a label (required, maximum 50 characters)
+3. Set background and text colors
+4. Watch the live preview
+5. Click **Add**
+
+Default colors are `#fee800` background and `#000000` text.
+
+### Color picker
+
+Color fields accept:
+
+| Input | Notes |
+|-------|-------|
+| Hex code | For example `#fee800`. A leading `#` is added if you omit it. |
+| Color picker | Click the colored button next to the field. |
+| Paste | Paste a hex value from the clipboard. |
+
+### Edit or delete
+
+On the separator row:
+
+- **Gear** opens the same dialog in edit mode
+- **Trash** asks for confirmation, then removes only that separator
+
+You can also right-click a separator for Edit, Delete, and the same move commands used for mods.
+
+### Reorder
+
+Drag a separator like any other row, or use the context menu (**Move to Top**, **Move to Bottom**, **Move to Specific Position**).
+
+Rows under a separator pick up that separator's background as a section accent, which also shows on the minimap.
+
+### Import and export
+
+Share separator styles (not their positions relative to specific mods):
+
+1. Open **Add Separator**
+2. **Export** writes a JSON file with label plus both colors
+3. **Import** appends those separators to the current list (Library or the open profile)
+
+Empty lists cannot be exported. Import creates new UUIDs, so you can import the same file more than once.
+
+## Search
+
+The search field filters as you type (short debounce). It matches:
+
+| Field | Example |
+|-------|---------|
+| Label | The mod name |
+| Description | Text under the label |
+| Mod UUID | Fingerprint icon appears on the label when this matches |
+| Installed Nexus Mods version | Version string on the row |
+
+Matches in the label, description, and version are highlighted.
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl + F` | Focus search and select the current query |
+| `Escape` | Clear search and unfocus (when the field is focused) |
+
+Search and tag filters can both be active. Clearing search does not reset tags.
+
+## Load order
+
+In a profile, list position is load order. When two enabled mods write the same game file, the **later write wins**. Settings control which end of the list is written last:
+
+| Setting | Who wins |
+|---------|----------|
+| **Set first mod to highest priority** | Position 1 is deployed last, so it overrides everything below it |
+| **Set last mod to highest priority** (default) | The bottom enabled mod is deployed last and overrides earlier rows |
+
+The Library order is only for browsing. It does not change how files are deployed.
+
+### Reorder mods
+
+**Drag and drop**
+
+- Grab any row (mod or separator)
+- Drop it at the new index
+- Numbers update immediately
+
+**Context menu** (right-click)
+
+- **Move to Top**: index 1
+- **Move to Bottom**: last index
+- **Move to Specific Position**: type a 1-based index
+
+You can also copy the mod UUID from that menu.
+
+## Minimap
+
+A compact map on the side of a long list mirrors separators and section colors. Drag the viewport on the map to scroll, or click a region to jump there.
+
+## Rename
+
+Click the pencil beside a mod label. The name is saved on the Library entry, so every profile shows the new label. Empty names are rejected.

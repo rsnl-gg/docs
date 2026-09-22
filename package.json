@@ -1,0 +1,50 @@
+{
+  "name": "@rsnl-gg/docs",
+  "version": "2026.9.1",
+  "description": "HD2 Arsenal Documentation",
+  "author": "Andrea Marucci",
+  "license": "MIT",
+  "private": true,
+  "main": "index.js",
+  "keywords": [
+    "docs",
+    "rsnl",
+    "rsnl.gg",
+    "rsnl-gg",
+    "rsnl-gg/docs"
+  ],
+  "type": "module",
+  "scripts": {
+    "build": "react-router build",
+    "dev": "react-router dev",
+    "host": "npm run dev -- --host",
+    "start": "dotenv -- react-router-serve ./build/server/index.js",
+    "dist": "node scripts/dist.mjs",
+    "typecheck": "react-router typegen && tsc"
+  },
+  "dependencies": {
+    "@react-router/node": "^8.3.1",
+    "@react-router/serve": "^8.3.1",
+    "@types/mdx": "^2.0.14",
+    "dotenv-cli": "^11.0.0",
+    "fumadocs-core": "^16.15.8",
+    "fumadocs-mdx": "^15.4.0",
+    "fumadocs-ui": "^16.15.8",
+    "isbot": "^5.2.2",
+    "lucide-react": "^1.43.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-icons": "^5.7.0",
+    "react-router": "^8.3.1"
+  },
+  "devDependencies": {
+    "@react-router/dev": "^8.3.1",
+    "@tailwindcss/vite": "^4.2.2",
+    "@types/node": "^22",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^5.9.3",
+    "vite": "^8.2.2"
+  }
+}

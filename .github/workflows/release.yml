@@ -1,0 +1,150 @@
+name: DOCS RELEASE PIPELINE
+
+on:
+  push:
+    branches:
+      - 'release/**'
+  pull_request:
+    types: [closed]
+    branches: [master, main, develop]
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{ github.repository }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+env:
+  NODE_VERSION: '22'
+  ARTIFACT_NAME: docs
+  DEPLOY_PATH: /opt/rsnl/docs
+  BUILD_OUTPUT: dist
+  SYSTEMD_UNIT: arsenal-docs
+  HEALTH_URL: http://127.0.0.1:3999/
+
+jobs:
+  build:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+      attempt: ${{ steps.meta.outputs.attempt }}
+      tag: ${{ steps.meta.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve release version
+        id: meta
+        run: |
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          VERSION="${BRANCH#release/}"
+          COUNT=$(git tag -l "${VERSION}-*" | wc -l | tr -d ' ')
+          ATTEMPT=$((COUNT + 1))
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "attempt=$ATTEMPT" >> "$GITHUB_OUTPUT"
+          echo "tag=${VERSION}-${ATTEMPT}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install and build production dist
+        run: |
+          npm ci
+          npm run dist
+
+      - name: Verify build output
+        run: |
+          test -f "${{ env.BUILD_OUTPUT }}/package.json"
+          test -f "${{ env.BUILD_OUTPUT }}/build/server/index.js"
+          test -d "${{ env.BUILD_OUTPUT }}/build/client/assets"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-bundle
+          path: ${{ env.BUILD_OUTPUT }}/
+          retention-days: 30
+          if-no-files-found: error
+
+  deploy-production:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-bundle
+          path: bundle
+
+      - name: Setup SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+
+      - name: Upload bundle
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          REMOTE_DIR="/tmp/rsnl-deploy-${{ github.run_id }}"
+          rsync -az --delete \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new" \
+            bundle/ \
+            "${DEPLOY_USER}@${DEPLOY_HOST}:${REMOTE_DIR}/"
+          echo "REMOTE_DIR=${REMOTE_DIR}" >> "$GITHUB_ENV"
+
+      - name: Promote and restart
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          scp -i ~/.ssh/deploy_key .github/scripts/remote-promote.sh \
+            "${DEPLOY_USER}@${DEPLOY_HOST}:/tmp/remote-promote.sh"
+          ssh -i ~/.ssh/deploy_key "${DEPLOY_USER}@${DEPLOY_HOST}" \
+            "chmod +x /tmp/remote-promote.sh && \
+             DEPLOY_SRC='${REMOTE_DIR}' DEPLOY_PATH='${{ env.DEPLOY_PATH }}' \
+             ARTIFACT_NAME='${{ env.ARTIFACT_NAME }}' VERSION='${{ needs.build.outputs.version }}' \
+             ATTEMPT='${{ needs.build.outputs.attempt }}' SYSTEMD_UNIT='${{ env.SYSTEMD_UNIT }}' \
+             HEALTH_URL='${{ env.HEALTH_URL }}' bash /tmp/remote-promote.sh && \
+             rm -rf '${REMOTE_DIR}' /tmp/remote-promote.sh"
+
+      - name: Tag release attempt
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "${{ needs.build.outputs.tag }}" -m "Deploy attempt ${{ needs.build.outputs.attempt }}"
+          git push origin "${{ needs.build.outputs.tag }}"
+
+  finalize-release:
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.head.ref, 'release/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: |
+          VERSION="${{ github.event.pull_request.head.ref }}"
+          VERSION="${VERSION#release/}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then exit 0; fi
+          git tag -a "$VERSION" -m "Release $VERSION"
+          git push origin "$VERSION"

@@ -1,0 +1,196 @@
+---
+title: Creating Packs
+description: Create a complete Arsenal language pack from a folder, manifest, and translations.
+icon: FolderPlus
+---
+
+This guide walks you through creating a complete language pack for Arsenal from scratch.
+
+## Prerequisites
+
+Before starting:
+
+- Arsenal installed
+- Text editor (VS Code recommended for JSON)
+- Basic understanding of JSON format
+- Flag image for your language (64x64px recommended)
+
+<Steps>
+<Step>
+
+### Set Up Your Language Pack
+
+Navigate to your Arsenal installation and create a new folder:
+
+```
+hd2arsenal/resources/locale/xx-XX/
+```
+
+Replace `xx-XX` with your language and country codes:
+
+- `xx` = ISO 639-1 language code (lowercase)
+- `XX` = ISO 3166-2 country code (uppercase)
+
+| Language | Folder Name |
+|----------|-------------|
+| German (Germany) | `de-DE` |
+| French (France) | `fr-FR` |
+| Spanish (Spain) | `es-ES` |
+| Japanese | `ja-JP` |
+| Portuguese (Brazil) | `pt-BR` |
+
+Then copy the contents of `en-GB` as your starting template:
+
+<Files>
+  <Folder name="en-GB" defaultOpen>
+    <File name="_manifest.json" />
+    <File name="flag.png" />
+    <Folder name="translations" defaultOpen>
+      <File name="dialogs.json" />
+      <File name="menus.json" />
+      <File name="misc.json" />
+      <File name="notifications.json" />
+      <File name="onboarding.json" />
+      <File name="settings.json" />
+      <File name="tutorials.json" />
+      <File name="ui.json" />
+    </Folder>
+  </Folder>
+</Files>
+
+<Callout title="Note">
+  This structure is a recommended starting point, but you can organize your translations differently-just make sure to update the `files` array in `_manifest.json` accordingly.
+</Callout>
+
+</Step>
+<Step>
+
+### Configure Manifest and Flag
+
+Edit `_manifest.json` with your language details:
+
+```json
+{
+    "label": "Deutsch",
+    "languageCode": "de",
+    "countryCode": "DE",
+    "flag": "flag.png",
+    "files": [
+        "translations/notifications.json",
+        "translations/dialogs.json",
+        "translations/settings.json",
+        "translations/ui.json",
+        "translations/menus.json",
+        "translations/onboarding.json",
+        "translations/tutorials.json",
+        "translations/misc.json"
+    ]
+}
+```
+
+| Field | Description | Example |
+|-------|-------------|---------|
+| `label` | Display name in language selector | `"Deutsch"` |
+| `languageCode` | ISO 639-1, lowercase | `"de"` |
+| `countryCode` | ISO 3166-2, uppercase | `"DE"` |
+| `flag` | Path to flag image | `"flag.png"` |
+| `files` | Array of translation file paths | `[...]` |
+
+<Callout type="warn" title="Important">
+  The `files` array must include all translation files. You can organize translations in a single file or any structure you prefer, as long as all required keys are present and all files are listed.
+</Callout>
+
+**Finding codes:** [ISO 639-1 Languages](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) | [ISO 3166-2 Countries](https://en.wikipedia.org/wiki/ISO_3166-2)
+
+Replace `flag.png` with an appropriate flag image (64x64px PNG recommended). Download flags from [flagcdn.com](https://flagcdn.com):
+
+```
+https://flagcdn.com/w40/{countrycode}.png
+```
+
+</Step>
+<Step>
+
+### Translate Files
+
+Open each translation file and replace English text with your translations.
+
+**Original (English):**
+
+```json
+{
+    "navbar-label-home": "HOME",
+    "navbar-label-mod-management": "MOD MANAGEMENT",
+    "tooltip-deploy": "Deploy active mods"
+}
+```
+
+**Translated (German):**
+
+```json
+{
+    "navbar-label-home": "STARTSEITE",
+    "navbar-label-mod-management": "MOD-VERWALTUNG",
+    "tooltip-deploy": "Aktive Mods bereitstellen"
+}
+```
+
+**Rules:**
+
+1. **Keep keys unchanged** - Only modify the values (right side)
+2. **Preserve formatting** - Keep uppercase/lowercase patterns
+3. **Maintain placeholders** - Keep `{variable}` markers exactly as-is
+4. **Check JSON validity** - No trailing commas, proper quotes
+
+</Step>
+</Steps>
+
+## Testing Your Pack
+
+After completing the steps above:
+
+1. **Save all files** - Ensure valid JSON
+2. **Restart Arsenal** - Required to detect new packs
+3. **Open Settings** - Go to language selection
+4. **Select your language** - It should appear in the list
+5. **Verify translations** - Navigate the interface
+
+## Troubleshooting
+
+### Language Doesn't Appear
+
+**Check manifest:**
+
+- Verify `_manifest.json` exists
+- Ensure valid JSON syntax
+- Confirm all required fields present
+
+**Check folder:**
+
+- Verify folder is in `resources/locale/`
+- Confirm folder name format `xx-XX`
+
+### Missing Translations
+
+**Check files:**
+
+- Verify all files listed in manifest exist
+- Ensure file paths match exactly
+- Check JSON syntax in each file
+
+### Broken Characters
+
+**Encoding issues:**
+
+- Save files as UTF-8
+- Avoid special encoding characters
+- Test with common special characters
+
+### Placeholder Errors
+
+**Symptoms:** `{count}` appears as literal text
+
+**Fix:** Ensure placeholders are preserved exactly:
+
+- Correct: `{count}`
+- Wrong: `{ count }`, `[count]`, `%count%`

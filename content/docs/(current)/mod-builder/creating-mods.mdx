@@ -1,0 +1,118 @@
+---
+title: Creating Mods
+description: Build a Helldivers 2 mod pack from an empty project to a zip you can import.
+icon: CirclePlay
+---
+
+This walkthrough uses the Mod Builder in **Arsenal 0.36 and later**. Open it from the sidebar.
+
+<Steps>
+<Step>
+
+### Start a project
+
+A new session already has a blank structure, default name and description, and a generated GUID.
+
+To wipe the current work, click **New Project** (refresh icon) on **MOD STRUCTURE**, then confirm. That clears folders, files, options, and metadata, and generates a new GUID.
+
+</Step>
+<Step>
+
+### Fill MOD DETAILS
+
+Set identity in the right panel before you build.
+
+| Field | What to set |
+|-------|-------------|
+| Icon | Click the thumbnail. Optional. Recommended 256x256 or 512x512 |
+| GUID | Leave the generated UUID unless you are intentionally replacing an existing mod |
+| Mod Name | The name shown in Arsenal |
+| Mod Description | Short summary. An empty string is allowed |
+
+</Step>
+<Step>
+
+### Add the file tree
+
+Right-click the explorer and add folders and files. Folders are only organization. They do not become options until you map them later.
+
+**Simple pack (no user choices):** put `.patch_0` / `.gpu_resources` / `.stream` files at the **root**. Root files deploy whenever the mod is enabled.
+
+**Pack with choices:** create folders for each variant, then put the matching patch files inside.
+
+<Files>
+  <Folder name="Ultra" defaultOpen>
+    <File name="textures.patch_0" />
+    <File name="textures.patch_0.gpu_resources" />
+  </Folder>
+  <Folder name="Performance" defaultOpen>
+    <File name="textures.patch_0" />
+    <File name="textures.patch_0.gpu_resources" />
+  </Folder>
+  <File name="shared.patch_0" />
+</Files>
+
+You can nest folders. Include paths will look like `Weapons/Gold`.
+
+</Step>
+<Step>
+
+### Create options (if needed)
+
+Skip this step if the pack has no variants.
+
+1. Click **Add Option** (`+`) in the **OPTIONS** header
+2. Set **Name** and **Description** on the card
+3. Optionally click the option thumbnail for a preview image
+4. Click **Select Folders**, check the folders this option should deploy, then **Confirm**
+5. For mutually exclusive variants under one option, click **Add Sub-Option** and map folders on each sub-option instead
+
+The include button shows a badge with how many folders are selected.
+
+Full details are on [Options](/mod-builder/options).
+
+</Step>
+<Step>
+
+### Preview the manifest
+
+Click **Preview Manifest** (code icon) in the **OPTIONS** header. Arsenal shows the cleaned Version 1 JSON that will go into the pack. The dialog is read-only. Close it when you are done.
+
+You do not edit JSON by hand in this builder.
+
+</Step>
+<Step>
+
+### Build and test
+
+1. Click **Build** (boxes icon)
+2. Fix any **errors** if the validation dialog lists them. **Warnings** can be accepted with **PROCEED WITH BUILD**
+3. Save the `.zip`
+4. In [Mod Management](/mod-management/adding-mods), **Add Mod** > **Files**, and pick that zip
+5. Enable the mod, pick options, [deploy](/mod-management/deployment), and test in-game
+
+The zip contains the folder tree, root files, icon images, and `manifest.json`. See [Projects and build](/mod-builder/projects).
+
+</Step>
+</Steps>
+
+## Always-on files vs option files
+
+| Location | When it deploys |
+|----------|-----------------|
+| Project root | Whenever the mod is enabled |
+| Folder mapped with **Include Folders** | Only when that option (or sub-option) is selected |
+| Folder with no include mapping | Copied into the zip, but Arsenal will not deploy those patch files as part of an option |
+
+Map every variant folder you care about. Leaving a folder unmapped is a common reason a choice appears in the UI but installs nothing.
+
+## Common mistakes
+
+| Mistake | What to do |
+|---------|------------|
+| Options with no folders | Use **Select Folders** (or add sub-options). Build warns if an option has neither |
+| Sub-option with empty include | Map at least one folder. This is a warning, not a hard error |
+| Empty option name | Fill **Name**. Build blocks on missing names |
+| Patch files only as images | Every playable option needs `.patch_0` (and related) files, not just a thumbnail |
+| Changed GUID on an update | Keep the same GUID if users should see this as the same mod |
+| Renamed folders after mapping | Arsenal updates include paths on rename. If you recreate a folder, map it again |

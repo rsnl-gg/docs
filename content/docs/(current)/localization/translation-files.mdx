@@ -1,0 +1,73 @@
+---
+title: Translation Files
+description: Translation file layout, placeholders, and key naming conventions.
+icon: FileBraces
+---
+
+This reference documents all translation files and their purposes. Use this as a guide when creating or updating language packs.
+
+<Callout title="Note">
+  You don't need to follow the same file organization as official language packs. You can organize your translations differently-even in a single file-as long as all required translation keys are included. The important thing is to list all your translation files in the `files` array within `_manifest.json`.
+</Callout>
+
+## File Overview
+
+| File | Purpose |
+|------|---------|
+| `ui.json` | Navigation, tooltips, general UI |
+| `dialogs.json` | Dialog titles, descriptions, buttons |
+| `notifications.json` | Toast messages and alerts |
+| `settings.json` | Settings page labels |
+| `menus.json` | Menu-specific text |
+| `onboarding.json` | First-run setup wizard |
+| `tutorials.json` | Help and tutorial text |
+| `misc.json` | Miscellaneous strings |
+
+## Placeholder Reference
+
+Placeholders must be preserved exactly in translations.
+
+| Placeholder | Usage | Example |
+|-------------|-------|---------|
+| `{count}` | Numeric counts | `"{count} mods selected"` |
+| `{name}` | Generic names | `"Welcome, {name}"` |
+| `{modName}` | Mod names | `"Update for {modName}"` |
+| `{total}` | Total counts | `"Position 1-{total}"` |
+| `{plural}` | Plural suffix | `"{count} mod{plural}"` |
+
+### Plural Handling
+
+For `{plural}` placeholders, the system adds "s" in English:
+
+- 1 mod - "1 mod"
+- 5 mods - "5 mods"
+
+Handle pluralization according to your language's rules.
+
+## Key Naming Convention
+
+Keys follow a consistent pattern:
+
+```
+[context]-[element]-[detail]
+```
+
+Examples:
+
+- `navbar-label-home` - Navbar / Label / Home
+- `dialog-title-deploy` - Dialog / Title / Deploy
+- `hint-edit-options` - Hint / Edit Options
+- `notification-mod-added` - Notification / Mod Added
+
+Understanding this pattern helps locate specific strings.
+
+## Adding Missing Keys
+
+If you notice missing translations in the UI:
+
+1. Check English files for the key
+2. Add the key to your translation files
+3. Provide appropriate translation
+4. Restart Arsenal to test
+
+Missing keys display as the key name itself (e.g., `navbar-label-home` appears if untranslated).

@@ -1,0 +1,186 @@
+---
+title: Adding Mods
+description: Import mods from folders, archives, drag and drop, Nexus Mods, or the Library.
+icon: FolderPlus
+---
+
+Every imported mod is stored in the **Library**. Depending on where you start the import, Arsenal can also add it to a profile immediately.
+
+Click **Add Mod** in the toolbar. The dialog offers three import types:
+
+| Type | What it does |
+|------|----------------|
+| **Files** | Pick `.zip`, `.rar`, or `.7z` archives. Arsenal extracts and validates them. |
+| **Folders** | Pick folders that already contain patch files (or subfolders with patch files). |
+| **NXM** | Opens Nexus Mods (after you sign in) so you can use Mod Manager Download. |
+
+In a **profile**, the dialog also includes **Or select existing mods from your library**.
+
+## Where the mods go
+
+| Started from | Result |
+|--------------|--------|
+| A profile | Files are added to the Library **and** to the profile you currently have open. |
+| The Library | If you have more than one profile, Arsenal asks for a **target profile**. Choose a profile, **Library only**, or cancel. If you only have Default, imports go there automatically. |
+
+Settings can change the initial enable state. Find both under **Settings > Mod Management**:
+
+| Setting | Effect |
+|---------|--------|
+| Automatically Activate Mods After Upload | New imports start enabled in the target profile |
+| Automatically Activate All Mods Options After Upload | All options start enabled on those new imports |
+
+## Folders
+
+Best for mods you already extracted.
+
+1. Click **Add Mod**
+2. Choose **Folders**
+3. Select one or more folders
+4. Confirm the target profile if Arsenal asks
+
+A valid folder has `manifest.json` and/or Helldivers 2 patch files (`.patch_0`, `.patch_1`, matching `.gpu_resources` / `.stream` files, and so on) in the root or in subfolders.
+
+<Tabs items={["Simple mod", "Mod with options"]}>
+  <Tab value="Simple mod">
+    <Files>
+      <Folder name="MyMod" defaultOpen>
+        <File name="manifest.json" />
+        <File name="something.patch_0" />
+        <File name="something.patch_0.gpu_resources" />
+        <File name="something.patch_0.stream" />
+      </Folder>
+    </Files>
+  </Tab>
+  <Tab value="Mod with options">
+    <Files>
+      <Folder name="MyMod" defaultOpen>
+        <File name="manifest.json" />
+        <Folder name="Option1" defaultOpen>
+          <File name="texture.patch_0" />
+        </Folder>
+        <Folder name="Option2" defaultOpen>
+          <File name="texture.patch_0" />
+        </Folder>
+      </Folder>
+    </Files>
+  </Tab>
+</Tabs>
+
+## Archives
+
+Best for freshly downloaded packs.
+
+1. Click **Add Mod**
+2. Choose **Files**
+3. Select `.zip`, `.rar`, or `.7z` archives
+4. Confirm the target profile if Arsenal asks
+
+| Format | Extension |
+|--------|-----------|
+| ZIP | `.zip` |
+| RAR | `.rar` |
+| 7-Zip | `.7z` |
+
+## Drag and drop
+
+Drag `.zip`, `.rar`, or `.7z` archives onto the Arsenal window. Folders are not accepted this way.
+
+If you have multiple profiles, the same **target profile** picker appears. Progress is shown while archives are extracted and imported.
+
+## From the Library
+
+When a profile is open, you can attach mods that are already imported:
+
+1. Click **Add Mod**
+2. Choose **Or select existing mods from your library**
+3. Search, toggle individual mods, or use select-all
+4. Click **Confirm Selection**
+
+The picker lists every library mod:
+
+| Detail | Behavior |
+|--------|----------|
+| Already in this profile | Green checkmark. Unchecking **removes** the mod from the profile without deleting Library files. |
+| Search / select all | Apply to the visible list. |
+| Confirm | Adds newly checked mods and removes newly unchecked ones. |
+
+You can also add from the Library view: use **Add to Profiles** on a row or on a multi-selection.
+
+## Nexus Mods (NXM)
+
+Arsenal registers as a Nexus Mods manager for Helldivers 2.
+
+### One-click download
+
+1. Sign in to Nexus Mods from the title bar account menu (OAuth or API key)
+2. Browse [Helldivers 2 on Nexus Mods](https://www.nexusmods.com/helldivers2)
+3. Click **Mod Manager Download**, **Vortex**, or **Arsenal**
+4. The file joins the download queue
+5. Open the **Downloads** panel from the title bar download icon and install when complete
+
+Choosing **NXM** in the Add Mod dialog opens the Nexus Mods site if you are signed in. If you are not signed in, Arsenal opens the login menu instead.
+
+<Callout title="Note">
+  Mod pages are not required to show Mod Manager or Vortex buttons. The **Arsenal browser extension** adds an Arsenal download button next to manual download so any Helldivers 2 file can be sent through NXM. Get it from [rsnl.gg/downloads/extensions](https://rsnl.gg/downloads/extensions).
+</Callout>
+
+### Downloads panel
+
+Open it with the download icon in the title bar. From there you can:
+
+- Watch pending, downloading, completed, and failed items
+- Install a completed download (Arsenal will ask which profile to use, unless the item already belongs to a collection)
+- **Install All** completed items
+- Remove items from the queue
+- (Nexus Mods Premium) pick a **Download Server**
+
+Empty-panel help text also links to Nexus Mods and the browser extension.
+
+### Installing an update from the list
+
+If **Check for Updates** finds a newer Nexus Mods file, a cloud-download button appears on the row.
+
+- Premium accounts can start the download in-app
+- Other accounts are sent to the Nexus Mods file page with manager download enabled (`nmm=1`)
+- When the queue item finishes, that same button becomes an **install** control so you do not have to open the panel
+
+After install, the previous "update available" state is cleared.
+
+## Nexus Mods collections
+
+Collection import requires a **Nexus Mods Premium** account, signed in with OAuth.
+
+Opening a collection link in Arsenal then shows an import dialog:
+
+- Required mods and optional mods are listed separately
+- Already-installed files are marked and skipped by default
+- Version conflicts let you **keep** your local file or **update** to the collection version
+- Choose **Create new profile** (default name is the collection name) or **Add to existing profile**
+- Confirm with **Import Collection**
+
+Queued collection files group together in the Downloads panel. When they finish, install them as usual. Mods already in the Library can be attached without downloading again.
+
+## Troubleshooting
+
+### No patch files / invalid structure
+
+The selected folder or archive must contain Helldivers 2 patch files or a valid `manifest.json`. Check that you selected the folder that actually holds those files, not a parent wrapper with only another folder inside.
+
+<Callout title="Note">
+  ReShade presets and similar overlay mods are not supported.
+</Callout>
+
+### Archive extraction failed
+
+- Confirm the archive is not corrupt
+- Confirm there is enough disk space in the mods storage folder (see Settings > Directories)
+- Extract manually and import with **Folders** instead
+
+### Mod appears but Options is disabled
+
+Only mods whose `manifest.json` defines options get an enabled sliders button. Many packs are a single set of patch files with nothing to configure.
+
+### Import cancelled
+
+Closing the target-profile picker or cancelling the file dialog leaves the Library unchanged.

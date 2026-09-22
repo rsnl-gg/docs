@@ -1,0 +1,185 @@
+---
+title: Creating Mods
+description: Create a Helldivers 2 mod pack from start to finish with the Arsenal Mod Builder.
+icon: CirclePlay
+---
+
+This guide walks you through creating a mod pack from start to finish using the **legacy** Mod Builder (**Arsenal 0.30.2 and earlier**). For 0.36 and later, see [Creating mods](/mod-builder/creating-mods).
+
+<Steps>
+<Step>
+
+### Start a New Project
+
+A fresh project starts with an empty folder structure, default manifest template, and auto-generated mod UUID.
+
+</Step>
+<Step>
+
+### Configure Basic Information
+
+Edit the manifest in the right panel to set your mod's identity:
+
+```json
+{
+  "Version": 1,
+  "Guid": "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",
+  "Name": "Your Awesome Mod",
+  "Description": "A brief description of what your mod does",
+  "IconPath": ""
+}
+```
+
+| Field | Purpose |
+|-------|---------|
+| `Version` | Manifest format version (always `1`) |
+| `Guid` | Unique identifier (auto-generated) |
+| `Name` | Display name shown in mod managers |
+| `Description` | Brief explanation of the mod |
+| `IconPath` | Relative path to icon image (optional) |
+
+</Step>
+<Step>
+
+### Add Files and Set Icon
+
+For mods without configurable options, add files directly to the root:
+
+1. Right-click in the file explorer area
+2. Select **Add Files** and choose your `.patch_0`, `.gpu_resources`, and `.stream` files
+3. Optionally, right-click and **Set Mod Icon** to add a thumbnail (PNG, JPEG, or WebP, 256x256 or 512x512 pixels)
+
+<Files>
+  <File name="texture_override.patch_0" />
+  <File name="texture_override.patch_0.gpu_resources" />
+  <File name="icon.png" />
+  <File name="manifest.json" />
+</Files>
+
+</Step>
+<Step>
+
+### Create Options and Sub-Options
+
+For mods with user-selectable variants:
+
+**Adding Options:**
+
+1. Right-click in the file explorer > **Add Folder**
+2. Rename the folder to something meaningful (e.g., "High Quality", "Low Quality")
+3. Right-click the folder > **Add Files** to populate it with patch files
+
+**Adding Sub-Options:**
+
+1. Right-click an option folder > **Add Sub Folder**
+2. Rename and add files as needed
+
+<Files>
+  <Folder name="Weapon Skins" defaultOpen>
+    <Folder name="Gold" defaultOpen>
+      <File name="gold_skin.patch_0" />
+    </Folder>
+    <Folder name="Chrome" defaultOpen>
+      <File name="chrome_skin.patch_0" />
+    </Folder>
+  </Folder>
+  <File name="manifest.json" />
+</Files>
+
+The manifest automatically reflects your folder structure:
+
+```json
+{
+  "Options": [
+    {
+      "Name": "Weapon Skins",
+      "SubOptions": [
+        { "Name": "Gold", "Include": ["Weapon Skins/Gold"] },
+        { "Name": "Chrome", "Include": ["Weapon Skins/Chrome"] }
+      ]
+    }
+  ]
+}
+```
+
+</Step>
+<Step>
+
+### Set Preview Images and Descriptions
+
+Help users visualize and understand each option:
+
+**Preview Images:**
+
+- Right-click an option folder > **Set Option Image**
+- Right-click a sub-option folder > **Set Sub-Option Image**
+
+**Descriptions:** Add them directly in the manifest editor:
+
+```json
+{
+  "Options": [
+    {
+      "Name": "High Quality",
+      "Description": "4K textures for maximum visual quality.",
+      "Include": ["High Quality"],
+      "Image": "High Quality/preview.png"
+    }
+  ]
+}
+```
+
+Press `Ctrl + S` to save manifest changes.
+
+</Step>
+<Step>
+
+### Build and Test
+
+When your mod is ready:
+
+1. Click the **Build** button
+2. Choose an output location
+3. The mod pack folder is generated:
+
+<Files>
+  <Folder name="YourModName" defaultOpen>
+    <File name="manifest.json" />
+    <File name="icon.png" />
+    <Folder name="High Quality" defaultOpen>
+      <File name="preview.png" />
+      <File name="modfile.patch_0" />
+    </Folder>
+    <Folder name="Low Quality" defaultOpen>
+      <File name="preview.png" />
+      <File name="modfile.patch_0" />
+    </Folder>
+  </Folder>
+</Files>
+
+**Testing:**
+
+1. Use **Add Mod** in Arsenal > select **Folders** > choose your built mod
+2. Enable the mod and configure options
+3. Deploy and test in-game
+
+</Step>
+</Steps>
+
+## Common Mistakes
+
+### Missing Patch Files
+
+Ensure every option folder has actual mod files, not just preview images.
+
+### Incorrect Include Paths
+
+The `Include` array must match folder names **exactly** (case-sensitive).
+
+### Invalid JSON
+
+Check for:
+
+- Missing commas between items
+- Trailing commas after the last item
+- Unclosed brackets or braces

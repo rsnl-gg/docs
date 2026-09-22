@@ -1,0 +1,13 @@
+{
+  "title": "Mod Management",
+  "icon": "Boxes",
+  "defaultOpen": true,
+  "pages": [
+    "index",
+    "profiles",
+    "adding-mods",
+    "organization",
+    "actions",
+    "deployment"
+  ]
+}

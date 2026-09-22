@@ -1,0 +1,75 @@
+---
+title: Mod Sync
+description: Share your mods, download missing files, deploy, and launch the game from a lobby.
+icon: RefreshCw
+---
+
+**Mod Sync** is how a lobby agrees on the same pack. The **host** picks mods from their Library. **Guests** download anything they lack, then everyone **Deploy**s and **Launch**es from the room.
+
+<Callout title="Nexus metadata">
+  Only mods that already have Nexus Mods identity (`modId` and `fileId`) can be shared. Import those files through Nexus / NXM so Arsenal can resolve downloads for guests. See [Adding Mods](/mod-management/adding-mods).
+</Callout>
+
+## Configure mods (host)
+
+1. Click **Configure mods** (pencil) or **Add mods from library**
+2. The dialog **CONFIGURE MODS** lists eligible Library mods
+3. Filter by **All Library** or a profile
+4. Search with **Search mods...**
+5. Check the mods to share (row click or checkbox). Select-all applies to the visible list
+6. Click **Apply**
+
+Empty dialog: **No mods with Nexus data in your library**.
+
+Apply sends the ordered list to the room and keeps option selections from the library or profile.
+
+If the host has not added anything yet:
+
+| Role | Empty copy |
+|------|------------|
+| Host | No mods configured. Add mods from your library to share them with the lobby. |
+| Guest | No mods specified. The host hasn't added any mods to this lobby yet. |
+
+**Mods required** on create/edit is only a listing flag. It does not fill this list.
+
+## Load order and options (host)
+
+Drag the handle (**Drag to reorder**) to change order.
+
+**Configure options** opens the usual option / sub-option table. The host can save. Guests can open it read-only. After a change, that mod's deploy color turns yellow until the next successful deploy.
+
+## Guest downloads
+
+Each row shows whether the file is already in your Library.
+
+| Status | What to do |
+|--------|------------|
+| In Library | Green check. Ready to deploy |
+| Missing | **Download from Nexus**. Premium accounts can download in-app with one click. Others open the Nexus file page to download in-app |
+| Downloading / queued / installing | Progress overlay |
+
+Completed lobby downloads install into the Library automatically when they belong to the room's mod set.
+
+## Deploy, purge, launch
+
+These three buttons sit under the mod list. Host and guests can all use them.
+
+| Button | Effect |
+|--------|--------|
+| **Purge all mods** | Removes deployed files from the game `data` folder (same as Mod Management purge) and resets lobby deploy tracking |
+| **Deploy** | Installs the lobby loadout and selected options. Status: Deploying..., Deployed!, Failed, or Error |
+| **Launch Helldivers 2** | Starts the game. The button ignores extra clicks for a few seconds while it is running |
+
+Deploy uses the **lobby** list and option selections, not whichever profile you had open in Mod Management.
+
+### Row colors
+
+Same meaning as [deployment status](/mod-management) in a profile:
+
+| Color | Meaning |
+|-------|---------|
+| **<span style={{ color: "#e24327" }}>Red</span>** | Not deployed |
+| **<span style={{ color: "#fea500" }}>Yellow / orange</span>** | Deployed, but options or order changed |
+| **<span style={{ color: "#00c853" }}>Green</span>** | Deployed and matching the snapshot |
+
+Player badges in the [room](/lobby/rooms) summarize how many of the lobby mods that person has deployed.
