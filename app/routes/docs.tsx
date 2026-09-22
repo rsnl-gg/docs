@@ -9,8 +9,15 @@ import {
   DocsTitle,
 } from "fumadocs-ui/layouts/docs/page";
 import { useFumadocsLoader } from "fumadocs-core/source/client";
+import { DocsPageActions } from "@/components/page-actions";
+import { SidebarSocialLinks } from "@/components/sidebar-social-links";
 import { useMDXComponents } from "@/components/mdx";
-import { baseOptions, pageTitle } from "@/lib/layout.shared";
+import {
+  baseOptions,
+  getPageGithubUrl,
+  getPageMarkdownUrl,
+  pageTitle,
+} from "@/lib/layout.shared";
 import { docs, source } from "@/lib/source";
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -29,23 +36,33 @@ export async function loader({ params }: Route.LoaderArgs) {
   return {
     path: page.path,
     url: page.url,
+    slugs: page.slugs,
     pageTree: await source.serializePageTree(source.getPageTree()),
   };
 }
 
-function Content({ path }: { path: string }) {
+function Content({
+  path,
+  slugs,
+}: {
+  path: string;
+  slugs: string[];
+}) {
   const page = docs.getPage(path);
   if (!page) throw new Error(`unknown page: ${path}`);
 
   const { toc } = use(page.load());
   const Mdx = page.body;
+  const markdownUrl = getPageMarkdownUrl(slugs).url;
+  const githubUrl = getPageGithubUrl(path);
 
   return (
     <DocsPage toc={toc}>
       <title>{pageTitle(page.title)}</title>
       <meta name="description" content={page.description} />
       <DocsTitle>{page.title}</DocsTitle>
-      <DocsDescription>{page.description}</DocsDescription>
+      <DocsDescription className="mb-0">{page.description}</DocsDescription>
+      <DocsPageActions markdownUrl={markdownUrl} githubUrl={githubUrl} />
       <DocsBody>
         <Mdx components={useMDXComponents()} />
       </DocsBody>
@@ -54,11 +71,15 @@ function Content({ path }: { path: string }) {
 }
 
 export default function Page({ loaderData }: Route.ComponentProps) {
-  const { path, pageTree } = useFumadocsLoader(loaderData);
+  const { path, pageTree, slugs } = useFumadocsLoader(loaderData);
 
   return (
-    <DocsLayout {...baseOptions()} tree={pageTree}>
-      <Content path={path} />
+    <DocsLayout
+      {...baseOptions()}
+      tree={pageTree}
+      sidebar={{ footer: <SidebarSocialLinks /> }}
+    >
+      <Content path={path} slugs={slugs} />
     </DocsLayout>
   );
 }
