@@ -6,4 +6,6 @@
 Arsenal Documentation
 </p>
 
+<p align="center">
 Documentation site for HD2 Arsenal, a Helldivers 2 companion desktop app and mod manager.
+</p>
