@@ -1,16 +1,17 @@
 name: DOCS RELEASE PIPELINE
 
+run-name: Release ${{ inputs.version }}
+
 on:
-  push:
-    branches:
-      - 'release/**'
-  pull_request:
-    types: [closed]
-    branches: [master, main, develop]
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g. 2026.10.2)'
+        required: true
+        type: string
 
 concurrency:
-  group: release-${{ github.repository }}-${{ github.ref }}
+  group: release-${{ github.repository }}
   cancel-in-progress: false
 
 permissions:
@@ -26,7 +27,6 @@ env:
 
 jobs:
   build:
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.meta.outputs.version }}
@@ -39,14 +39,21 @@ jobs:
 
       - name: Resolve release version
         id: meta
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
         run: |
-          BRANCH="${GITHUB_REF#refs/heads/}"
-          VERSION="${BRANCH#release/}"
+          VERSION="$(echo "$INPUT_VERSION" | xargs)"
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]; then
+            echo "Invalid release version: $VERSION"
+            exit 1
+          fi
           COUNT=$(git tag -l "${VERSION}-*" | wc -l | tr -d ' ')
           ATTEMPT=$((COUNT + 1))
+          TAG="${VERSION}-${ATTEMPT}"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "attempt=$ATTEMPT" >> "$GITHUB_OUTPUT"
-          echo "tag=${VERSION}-${ATTEMPT}" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "Release ${VERSION} attempt ${ATTEMPT} from ${GITHUB_REF_NAME} -> tag ${TAG} (after approval)"
 
       - uses: actions/setup-node@v4
         with:
@@ -72,7 +79,6 @@ jobs:
           if-no-files-found: error
 
   deploy-production:
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     needs: build
     runs-on: ubuntu-latest
     environment: production
@@ -129,22 +135,3 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag -a "${{ needs.build.outputs.tag }}" -m "Deploy attempt ${{ needs.build.outputs.attempt }}"
           git push origin "${{ needs.build.outputs.tag }}"
-
-  finalize-release:
-    if: >-
-      github.event_name == 'pull_request' &&
-      github.event.pull_request.merged == true &&
-      startsWith(github.event.pull_request.head.ref, 'release/')
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - run: |
-          VERSION="${{ github.event.pull_request.head.ref }}"
-          VERSION="${VERSION#release/}"
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git rev-parse "$VERSION" >/dev/null 2>&1; then exit 0; fi
-          git tag -a "$VERSION" -m "Release $VERSION"
-          git push origin "$VERSION"
